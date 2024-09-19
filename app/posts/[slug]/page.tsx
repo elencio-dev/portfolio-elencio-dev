@@ -1,5 +1,3 @@
-'use client'
-
 import { notFound } from "next/navigation"
 import { getPrismicClient } from '../../../services/prismic'
 import * as prismicH from '@prismicio/helpers'
@@ -68,7 +66,7 @@ export default function Post({ params }: PostProps) {
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8">
-      <Link href="/" className="inline-flex items-center text-white hover:text-gray-400 mb-4">
+      <Link href="/" className="inline-flex items-center text-primary hover:text-primary/70 mb-4">
         <ArrowLeft className="mr-2 h-4 w-4" />
         Voltar para o Blog
       </Link>
