@@ -1,60 +1,78 @@
-import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from '@/components/ui/badge';
-import { ArrowRight } from 'lucide-react';
-import { getPrismicClient } from "@/services/prismic";
-import * as prismicH from '@prismicio/helpers';
+import Link from 'next/link'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { ArrowRight } from 'lucide-react'
+import { getPrismicClient } from '@/services/prismic'
+import * as prismicH from '@prismicio/helpers'
 
 export type Post = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  updatedAt: string;
-  tag: string[];
-  categories: string;
-  image: string;
-};
+  slug: string
+  title: string
+  excerpt: string
+  updatedAt: string
+  tag: string[]
+  categories: string
+  image: string
+}
 
 export default async function Blog() {
-  const prismic = getPrismicClient();
+  const prismic = getPrismicClient()
 
-  const response = await prismic.getByType("publication", {
-    fetch: ["publication.title", "publication.content", "publication.tags", "publication.categories"],
+  const response = await prismic.getByType('publication', {
+    fetch: [
+      'publication.title',
+      'publication.content',
+      'publication.tags',
+      'publication.categories',
+    ],
     pageSize: 100,
-  });
+  })
 
-  const posts = response.results.map((post) => {
-    const contentArray = post.data.content;
+  const posts = response.results
+    .map((post) => {
+      const contentArray = post.data.content
 
-    if (Array.isArray(contentArray)) {
-      const paragraphs = contentArray
-        .filter((content) => content.type === "paragraph")
-        .map((paragraph) => paragraph.text)
-        .join(" ");
+      if (Array.isArray(contentArray)) {
+        const paragraphs = contentArray
+          .filter((content) => content.type === 'paragraph')
+          .map((paragraph) => paragraph.text)
+          .join(' ')
 
-      return {
-        slug: post.uid,
-        tag: post.tags,
-        image: post.href,
-        title: prismicH.asText(post.data.title),
-        excerpt: paragraphs.slice(0, 100) + "....",
-        updatedAt: post.last_publication_date
-          ? new Date(post.last_publication_date).toLocaleDateString("pt-BR", {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-            })
-          : "",
-      };
-    }
-  }).filter(Boolean) as Post[]; // Ensure that the result is typed correctly
+        return {
+          slug: post.uid,
+          tag: post.tags,
+          image: post.href,
+          title: prismicH.asText(post.data.title),
+          excerpt: paragraphs.slice(0, 100) + '....',
+          updatedAt: post.last_publication_date
+            ? new Date(post.last_publication_date).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              })
+            : '',
+        }
+      }
+      return null // Retorna null se contentArray não for um array
+    })
+    .filter(Boolean) as Post[]
 
   return (
     <div className="max-w-4xl">
       <Card className="bg-gray-800 text-white border-0">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold mb-4">Explicando conceitos</CardTitle>
-          <CardDescription className="text-gray-400">Últimos Artigos</CardDescription>
+          <CardTitle className="text-2xl font-bold mb-4">
+            Explicando conceitos
+          </CardTitle>
+          <CardDescription className="text-gray-400">
+            Últimos Artigos
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -71,7 +89,9 @@ export default async function Blog() {
                 <p className="text-gray-400 mt-2">{post.excerpt}</p>
                 <div className="mt-4 flex items-center text-sm text-gray-500">
                   <span>{post.updatedAt}</span>
-                  <Badge className="ml-4 bg-blue-600 text-white">Read More</Badge>
+                  <Badge className="ml-4 bg-blue-600 text-white">
+                    Read More
+                  </Badge>
                 </div>
               </Link>
             ))}
@@ -79,5 +99,5 @@ export default async function Blog() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

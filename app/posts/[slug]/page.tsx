@@ -1,17 +1,37 @@
 'use client'
 
-import { notFound } from "next/navigation"
+import { notFound } from 'next/navigation'
 import { getPrismicClient } from '../../../services/prismic'
 import * as prismicH from '@prismicio/helpers'
-import { Clock, Calendar, Facebook, Twitter, Linkedin, ArrowLeft } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button"
+import {
+  Clock,
+  Calendar,
+  Facebook,
+  Twitter,
+  Linkedin,
+  ArrowLeft,
+} from 'lucide-react'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
 interface PostProps {
   params: { slug: string }
+}
+
+interface Post {
+  slug: string
+  title: string
+  updatedAt: string
+  content: string
 }
 
 async function getPost(slug: string) {
@@ -25,11 +45,14 @@ async function getPost(slug: string) {
   const post = {
     slug: response.uid,
     title: prismicH.asText(response.data.title),
-    updatedAt: new Date(response.last_publication_date).toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }),
+    updatedAt: new Date(response.last_publication_date).toLocaleDateString(
+      'pt-BR',
+      {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      },
+    ),
     content: prismicH.asHTML(response.data.content),
   }
 
@@ -45,7 +68,7 @@ function countingTimeOfReading(content: string) {
 }
 
 export default function Post({ params }: PostProps) {
-  const [post, setPost] = useState<any>(null)
+  const [post, setPost] = useState<Post | null>(null)
   const [readingTime, setReadingTime] = useState(0)
 
   useEffect(() => {
@@ -55,7 +78,7 @@ export default function Post({ params }: PostProps) {
         notFound()
       }
       setPost(loadedPost)
-      setReadingTime(countingTimeOfReading(loadedPost.content || ""))
+      setReadingTime(countingTimeOfReading(loadedPost.content || ''))
     }
     loadPost()
   }, [params.slug])
@@ -68,13 +91,18 @@ export default function Post({ params }: PostProps) {
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8">
-      <Link href="/" className="inline-flex items-center text-primary hover:text-primary/70 mb-4">
+      <Link
+        href="/"
+        className="inline-flex items-center text-primary hover:text-primary/70 mb-4"
+      >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Voltar para o Blog
       </Link>
       <Card className="overflow-hidden">
         <CardHeader className="bg-primary text-primary-foreground p-6">
-          <CardTitle className="text-3xl font-bold leading-tight">{post.title}</CardTitle>
+          <CardTitle className="text-3xl font-bold leading-tight">
+            {post.title}
+          </CardTitle>
           <div className="flex items-center space-x-4 mt-4 text-sm">
             <div className="flex items-center">
               <Calendar className="mr-2 h-4 w-4" />
@@ -98,13 +126,40 @@ export default function Post({ params }: PostProps) {
             Gostou do artigo? Compartilhe!
           </div>
           <div className="flex space-x-2">
-            <Button size="sm" variant="outline" onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`, '_blank')}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                window.open(
+                  `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
+                  '_blank',
+                )
+              }
+            >
               <Facebook className="h-4 w-4" />
             </Button>
-            <Button size="sm" variant="outline" onClick={() => window.open(`https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(post.title)}`, '_blank')}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                window.open(
+                  `https://twitter.com/intent/tweet?url=${shareUrl}&text=${encodeURIComponent(post.title)}`,
+                  '_blank',
+                )
+              }
+            >
               <Twitter className="h-4 w-4" />
             </Button>
-            <Button size="sm" variant="outline" onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${encodeURIComponent(post.title)}`, '_blank')}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                window.open(
+                  `https://www.linkedin.com/shareArticle?mini=true&url=${shareUrl}&title=${encodeURIComponent(post.title)}`,
+                  '_blank',
+                )
+              }
+            >
               <Linkedin className="h-4 w-4" />
             </Button>
           </div>
