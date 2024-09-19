@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation"
 import { getPrismicClient } from '../../../services/prismic'
 import * as prismicH from '@prismicio/helpers'
-import { Clock, Calendar, Share2, Facebook, Twitter, Linkedin, ArrowLeft } from 'lucide-react'
+import { Clock, Calendar, Facebook, Twitter, Linkedin, ArrowLeft } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"

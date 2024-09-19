@@ -1,6 +1,3 @@
-// app/Blog/page.tsx
-
-import { GetStaticProps } from "next";
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from '@/components/ui/badge';
