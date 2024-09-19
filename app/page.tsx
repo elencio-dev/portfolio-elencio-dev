@@ -1,22 +1,25 @@
-import Image from "next/image"
-import { GithubIcon, LinkedinIcon, MailIcon, BarChart2, Code, Briefcase } from "lucide-react"
-import ProjectsCard from "./components/ProjectsCard"
-import SkillsCard from "./components/SkillsCard"
-import ProfileCard from "./components/ProfileCard"
+'use client'
 
-export default function Home() {
+import { useState, useEffect } from 'react'
+import { Github, ExternalLink, Code } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import Blog from './Blog/page'
+import Profile from '@/components/Profile/page'
+
+
+
+export default function Portfolio() {
   return (
-    <main className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Profile Card */}
-          <ProfileCard />
-          {/* Skills Card */}
-          <SkillsCard />
-          {/* Projects Card */}
-           <ProjectsCard />
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
+          <Profile />
+        </div>
+        <div>
+          <Blog />
         </div>
       </div>
-    </main>
+    </div>
   )
 }
