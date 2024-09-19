@@ -1,3 +1,5 @@
+'use client'
+
 import { notFound } from "next/navigation"
 import { getPrismicClient } from '../../../services/prismic'
 import * as prismicH from '@prismicio/helpers'
